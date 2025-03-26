@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../models/User.model.js";
 import twilio from "twilio";
 import Vehicle from "../models/vehicle.model.js";
+import User from "../models/user.model.js";
 
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;
