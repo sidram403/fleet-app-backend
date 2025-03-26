@@ -6,6 +6,7 @@ import User from "../models/user.model.js";
 
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;
+const blacklistedTokens = new Set(); // Store invalidated toke
 
 const generateOTP = () => Math.floor(1000 + Math.random() * 9000).toString();
 // Register User with Role
@@ -72,6 +73,23 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const logout = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1]; // Get token from headers
+    if (!token) {
+      return res.status(400).json({ message: "No token provided!" });
+    }
+
+    blacklistedTokens.add(token); // Add token to blacklist (Optional)
+
+    res.status(200).json({ message: "Logged out successfully!" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
   
 export const profile = async (req, res) =>{
     const {token} = req.body;
